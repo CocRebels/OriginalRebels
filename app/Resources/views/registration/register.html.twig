@@ -1,0 +1,73 @@
+{% extends  'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row main">
+            <div class="panel-heading">
+                <div class="panel-title text-center">
+                    <h1 class="title">Contest of Champions</h1>
+                    <h3>Registration</h3>
+                    <hr />
+                </div>
+            </div>
+            <div class="main-login main-center">
+                {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                <div class="form-group">
+                    {{ form_label(form.username) }}
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            {{ form_widget(form.username, {'attr': {'placeholder': 'Choose your Username..'}}) }}
+                        </div>
+                        {{ form_errors(form.username) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.email) }}
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            {{ form_widget(form.email, {'attr': {'placeholder': 'Choose your Email..'}}) }}
+                        </div>
+                        {{ form_errors(form.email) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.plainPassword.first) }}
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            {{ form_widget(form.plainPassword.first , {'attr': {'placeholder': 'Choose your Password..'}}) }}
+                        </div>
+                        {{ form_errors(form.plainPassword.first) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.plainPassword.second) }}
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            {{ form_widget(form.plainPassword.second, {'attr': {'placeholder': 'Reapeat your Password..'}}) }}
+                        </div>
+                        {{ form_errors(form.plainPassword.second) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form.country) }}
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-globe fa" aria-hidden="true"></i></span>
+                            {{ form_widget(form.country, {'attr': {'placeholder': 'Choose your Country..'}}) }}
+                        </div>
+                        {{ form_errors(form.country) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block login button">Resgister</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
