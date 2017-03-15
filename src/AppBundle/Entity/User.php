@@ -23,7 +23,15 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $dateCreated;
 
+    /**
+     * @ORM\Column(type="string", length=1)
+     */
+    private $status;
     /**
      * @ORM\Column(type="string", length=25, unique=true)
      * @Assert\NotBlank()
@@ -199,6 +207,39 @@ class User implements UserInterface
     {
         $this->country = $country;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * @param mixed $dateCreated
+     */
+    public function setDateCreated($dateCreated)
+    {
+        $this->dateCreated = $dateCreated;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param mixed $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
 
 
 

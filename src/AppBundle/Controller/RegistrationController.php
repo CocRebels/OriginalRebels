@@ -37,11 +37,23 @@ class RegistrationController extends Controller
             $user->setPassword($password);
 
             $user->setRoles(['ROLE_USER']);
+            $user->setStatus('N');
+            $user->setDateCreated(new \DateTime());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            $id = $user->getId();
+            $substract = $id % 7;
+            $hash = md5($id);
+            $urlHash = substr($hash, $substract, $substract+9);
 
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Hello champion')
+                ->setFrom('artur.litvinavicius@gmail.com')
+                ->setTo($user->getEmail())
+                ->setBody('<a href="localhost:8000/verify/".$id."/".$urlHash" >Here</a>');
+            $this->get('mailer')->send($message);
             $this->addFlash('success', 'You sucesfully registered!');
 
             return $this->redirectToRoute('login');

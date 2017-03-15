@@ -291,4 +291,34 @@ class DefaultController extends Controller
     exit;
     }
 
+    /**
+     * @param $id
+     * @param $code
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param $id
+     * @param $code
+     * @Route("verify/{id}/{code}", name="verifyEmail")
+     */
+    public function verifyAction($id, $code)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')->findOneBy(['id'=>$id]);
+        $status = $user->getStatus();
+        if ($status == 'Y' || $user == null) {
+            return $this->redirectToRoute('login');
+        }
+        $substract = $id % 7;
+        $hash = md5($id);
+        $urlHash = substr($hash, $substract, $substract+9);
+        if ($code !== $urlHash){
+            return $this->redirectToRoute('login');
+        }
+        dump($user);
+        $user->setStatus('Y');
+        $em->flush();
+        dump($user);
+        exit;
+    }
+
 }
