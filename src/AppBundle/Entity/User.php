@@ -35,11 +35,23 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=25, unique=true)
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min="6",
+     *      max="25",
+     *      minMessage="Your Username must be at least {{ limit }} characters long",
+     *      maxMessage="Your Username cannot be longer than {{ limit }} characters"
+     * )
      */
     private $username;
     /**
      * @Assert\NotBlank(groups={"Registration"})
      * @Assert\Length(max=4096)
+     * @Assert\Length(
+     *      min="12",
+     *      max="50",
+     *      minMessage="Your Password must be at least {{ limit }} characters long",
+     *      maxMessage="Your Password cannot be longer than {{ limit }} characters"
+     * )
      */
     private $plainPassword;
 
@@ -62,6 +74,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=2)
+     * @Assert\Country()
      */
     private $country;
 

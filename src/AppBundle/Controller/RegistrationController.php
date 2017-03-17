@@ -47,12 +47,12 @@ class RegistrationController extends Controller
             $substract = $id % 7;
             $hash = md5($id);
             $urlHash = substr($hash, $substract, $substract+9);
-
+            // Message after registration to verify your email
             $message = \Swift_Message::newInstance()
                 ->setSubject('Hello champion')
                 ->setFrom('artur.litvinavicius@gmail.com')
                 ->setTo($user->getEmail())
-                ->setBody('<a href="localhost:8000/verify/".$id."/".$urlHash" >Here</a>');
+                ->setBody('Here is a link <a href="http://localhost:8000/verify/'.$id.'/'.$urlHash.'">Verify your email</a>', 'text/html');
             $this->get('mailer')->send($message);
             $this->addFlash('success', 'You sucesfully registered!');
 
