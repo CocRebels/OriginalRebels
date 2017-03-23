@@ -78,6 +78,15 @@ class User implements UserInterface
      */
     private $country;
 
+    /**
+     * @ORM\Column(type="string", nullable=true )
+     */
+    private $passRecoverHash;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $passRecoverTimeStamp;
 
 
     /**
@@ -253,7 +262,37 @@ class User implements UserInterface
         $this->status = $status;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPassRecoverHash()
+    {
+        return $this->passRecoverHash;
+    }
 
+    /**
+     * @param mixed $passRecoverHash
+     */
+    public function setPassRecoverHash($passRecoverHash)
+    {
+        $this->passRecoverHash = $passRecoverHash;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassRecoverTimeStamp()
+    {
+        return $this->passRecoverTimeStamp;
+    }
+
+    /**
+     * @param mixed $passRecoverTimeStamp
+     */
+    public function setPassRecoverTimeStamp($passRecoverTimeStamp)
+    {
+        $this->passRecoverTimeStamp = $passRecoverTimeStamp;
+    }
 
 
 }

@@ -13,6 +13,7 @@ security:
                             - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
                             - { path: ^/verify, roles: IS_AUTHENTICATED_ANONYMOUSLY }
                             - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+                            - { path: ^/password_recover, roles:  IS_AUTHENTICATED_ANONYMOUSLY }
                             - { path: ^/admin, roles: ROLE_ADMIN }
                             - { path: ^/, roles:  IS_AUTHENTICATED_FULLY }
     encoders:
