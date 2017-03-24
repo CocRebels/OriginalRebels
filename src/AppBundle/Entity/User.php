@@ -47,7 +47,7 @@ class User implements UserInterface
      * @Assert\NotBlank(groups={"Registration"})
      * @Assert\Length(max=4096)
      * @Assert\Length(
-     *      min="12",
+     *      min="10",
      *      max="50",
      *      minMessage="Your Password must be at least {{ limit }} characters long",
      *      maxMessage="Your Password cannot be longer than {{ limit }} characters"

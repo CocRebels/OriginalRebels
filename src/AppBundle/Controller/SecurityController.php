@@ -55,10 +55,11 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/password_recovery", name="password_remind")
+     * @Route("/forgot_password", name="password_remind")
      */
-    public function changePassword(Request $request)
+    public function forgotPasswordAction(Request $request)
     {
+        $website = $this->getParameter('website');
         $form = $this->createForm(SendPasswordChangeType::class);
 
         $form->handleRequest($request);
@@ -68,18 +69,61 @@ class SecurityController extends Controller
             $user = $em->getRepository('AppBundle:User')
                 ->loadUserByUsername($data['email']);
             //TODO: *making a hash for password recovery
-            $user->setpassRecoverHash('123456');
+            $urlHash = $this->container
+                ->get('security.retrive.data.hashing')
+                ->getHash($data['email']);
+            $user->setpassRecoverHash($urlHash);
             $user->setpassRecoverTimeStamp(new \DateTime());
-
             $em->persist($user);
             $em->flush();
-            $this->addFlash('success', $data['email']);
-
-
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Hello champion')
+                ->setFrom('artur.litvinavicius@gmail.com')
+                ->setTo($data['email'])
+                ->setBody('Here is a link <a href="http://'.$website.'/recover_password/'.$user->getId().'/'.$urlHash.'">Change your password.</a>', 'text/html');
+            $this->get('mailer')->send($message);
+            $this->addFlash('success', 'Check your email for email recovery details!');
         }
         return $this->render(
             'security/passwordRemind.html.twig',
             array('form' => $form->createView())
             );
+    }
+
+    /**
+     * @Route("/recover_password", name="password_recover")
+     */
+    public function passwordRecoveryAction()
+    {
+
+    }
+
+    /**
+     * @param $key
+     * @param $code
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param $key
+     * @param $code
+     * @Route("verify/{key}/{code}", name="verifyEmail")
+     */
+    public function verifyAction($key, $code)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')->findOneBy(['email'=>$key]);
+        $status = $user->getStatus();
+        if ($status == 'Y' || $user == null) {
+            return $this->redirectToRoute('login');
+        }
+        $urlHash = $this->container
+            ->get('security.retrive.data.hashing')
+            ->getHash($key);
+        if ($code !== $urlHash){
+            return $this->redirectToRoute('login');
+        }
+        $user->setStatus('Y');
+        $em->flush();
+        $this->addFlash('success', 'Your email is successfully verified! You can now login.');
+        return $this->redirectToRoute('login');
     }
 }

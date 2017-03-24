@@ -12,9 +12,12 @@ namespace AppBundle\Security;
 class Hashing
 {
 
-    protected $key;
+    public function getHash($key)
+    {
+        $modus = count($key) % 10;
+        $hash = md5($key);
+        $generatedHash = substr($hash, $modus,$modus+20);
 
-    public function getHash($key) {
-
+        return $generatedHash;
     }
 }

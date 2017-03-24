@@ -43,16 +43,16 @@ class RegistrationController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            $id = $user->getId();
-            $substract = $id % 7;
-            $hash = md5($id);
-            $urlHash = substr($hash, $substract, $substract+9);
+            $email = $user->getEmail();
+            $urlHash = $this->container
+                ->get('security.retrive.data.hashing')
+                ->getHash($email);
             // Message after registration to verify your email
             $message = \Swift_Message::newInstance()
                 ->setSubject('Hello champion')
                 ->setFrom('artur.litvinavicius@gmail.com')
-                ->setTo($user->getEmail())
-                ->setBody('Here is a link <a href="http://localhost:8000/verify/'.$id.'/'.$urlHash.'">Verify your email</a>', 'text/html');
+                ->setTo($email)
+                ->setBody('Here is a link <a href="http://localhost:8000/verify/'.$email.'/'.$urlHash.'">Verify your email</a>', 'text/html');
             $this->get('mailer')->send($message);
             $this->addFlash('success', 'You sucesfully registered!');
 
