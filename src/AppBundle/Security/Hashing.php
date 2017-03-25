@@ -11,13 +11,27 @@ namespace AppBundle\Security;
 
 class Hashing
 {
-
-    public function getHash($key)
+    public function __construct($id)
     {
-        $modus = count($key) % 10;
-        $hash = md5($key);
-        $generatedHash = substr($hash, $modus,$modus+20);
-
-        return $generatedHash;
+        $this->id = $id;
+        $this->encodedId = $id*8456;
+        $this->decodedId = $id/8456;
     }
+
+    public function generateHash()
+    {
+            if (is_string($this->id))
+            {
+                $modusNumber = count($this->id) % 11;
+                $hash = md5($this->id);
+            }
+            else {
+                $modusNumber = $this->encodedId % 11;
+                $hash = md5($this->encodedId);
+            }
+            $generatedHash = substr($hash, $modusNumber, $modusNumber + 19);
+
+            return $generatedHash;
+    }
+
 }

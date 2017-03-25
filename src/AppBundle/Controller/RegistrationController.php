@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
+use AppBundle\Security\Hashing;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +36,7 @@ class RegistrationController extends Controller
             $password = $this->get('security.password_encoder')
                 ->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
-
+            $website = $this->getParameter('website');
             $user->setRoles(['ROLE_USER']);
             $user->setStatus('N');
             $user->setDateCreated(new \DateTime());
@@ -43,16 +44,13 @@ class RegistrationController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-            $email = $user->getEmail();
-            $urlHash = $this->container
-                ->get('security.retrive.data.hashing')
-                ->getHash($email);
+            $idHash = new Hashing($user->getId());
             // Message after registration to verify your email
             $message = \Swift_Message::newInstance()
                 ->setSubject('Hello champion')
                 ->setFrom('artur.litvinavicius@gmail.com')
-                ->setTo($email)
-                ->setBody('Here is a link <a href="http://localhost:8000/verify/'.$email.'/'.$urlHash.'">Verify your email</a>', 'text/html');
+                ->setTo($user->getEmail())
+                ->setBody('Here is a link <a href="http://'.$website.'/verify/'.$user->getId().'/'.$idHash->generateHash().'">Verify your email</a>', 'text/html');
             $this->get('mailer')->send($message);
             $this->addFlash('success', 'You sucesfully registered!');
 
