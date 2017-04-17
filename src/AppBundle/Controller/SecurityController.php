@@ -9,6 +9,8 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\Entity\User;
+use AppBundle\Form\ChangePasswordType;
 use AppBundle\Form\SendPasswordChangeType;
 use AppBundle\Security\Hashing;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -94,7 +96,7 @@ class SecurityController extends Controller
      * @param $email
      * @Route("/recover_password/{email}/{key}", name="password_recover")
      */
-    public function passwordRecoveryAction($email, $key)
+    public function passwordRecoveryAction($email, $key, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')
@@ -103,8 +105,22 @@ class SecurityController extends Controller
             return $this->redirectToRoute('login');
         }
 
+        $form = $this->createForm(ChangePasswordType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $data = $form->getData();
+            $password = $this->get('security.password_encoder')
+                ->encodePassword($user, $data['plainPassword']);
+            $user->setPassword($password);
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'You sucesfully changed your password!');
+
+        }
+
         return $this->render(
-            'security/passwordChange.html.twig'
+            'security/passwordChange.html.twig',
+            array('form' => $form->createView())
         );
     }
 
@@ -119,8 +135,10 @@ class SecurityController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->findOneBy(['id'=>$key]);
-        $status = $user->getStatus();
-        if ($status == 'Y' || $user == null) {
+        if ($user == null ){
+            return $this->redirectToRoute('login');
+        }
+        else if ($user->getStatus() == 'Y' || $user->getStatus() == null) {
             return $this->redirectToRoute('login');
         }
         $idHash = new Hashing($user->getId());
@@ -128,6 +146,7 @@ class SecurityController extends Controller
             return $this->redirectToRoute('login');
         }
         $user->setStatus('Y');
+        $user->setRoles(['ROLE_USER']);
         $em->flush();
         $this->addFlash('success', 'Your email is successfully verified! You can now login.');
         return $this->redirectToRoute('login');

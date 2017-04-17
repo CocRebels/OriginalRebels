@@ -37,7 +37,7 @@ class RegistrationController extends Controller
                 ->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
             $website = $this->getParameter('website');
-            $user->setRoles(['ROLE_USER']);
+            $user->setRoles(['ROLE_USER_NOT_VERIFIED']);
             $user->setStatus('N');
             $user->setDateCreated(new \DateTime());
 

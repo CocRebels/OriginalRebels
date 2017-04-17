@@ -41,10 +41,6 @@ security:
             logout:
                 path: /logout
                 target: /login
-            remember_me:
-                secret:   '%secret%'
-                lifetime: 604800
-                path:     /
 
             switch_user: ~
             # activate different ways to authenticate

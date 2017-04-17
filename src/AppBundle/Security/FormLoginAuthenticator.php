@@ -8,14 +8,17 @@
 
 namespace AppBundle\Security;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Core\Role\RoleHierarchy;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -28,10 +31,17 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
 
     private $encoder;
 
-    public function __construct(RouterInterface $router, UserPasswordEncoderInterface $encoder)
+    private $session;
+
+    private $token;
+
+
+    public function __construct(RouterInterface $router, UserPasswordEncoderInterface $encoder, ContainerInterface $container)
     {
         $this->router = $router;
         $this->encoder = $encoder;
+        $this->session = $container->get('session');
+        $this->token = $container->get('security.token_storage');
     }
 
     public function getCredentials(Request $request)
@@ -68,8 +78,18 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         throw new BadCredentialsException();
     }
 
+
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+        $userRoles = $token->getRoles();
+        $userRole = $userRoles[0]->getRole();
+        if ($userRole == 'ROLE_USER_NOT_VERIFIED') {
+            $this->token->setToken(null);
+            $this->session->invalidate();
+
+            return  new RedirectResponse($this->router->generate('login'));
+        }
+
         $url = $this->router->generate('homepage');
 
         return new RedirectResponse($url);
@@ -94,8 +114,4 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         return $this->router->generate('homepage');
     }
 
-    public function supportsRememberMe()
-    {
-        return false;
-    }
 }

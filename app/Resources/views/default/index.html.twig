@@ -12,10 +12,10 @@
                                 <th>Champion</th>
                                 <th>Class</th>
                             </tr>
-                            {% for key, item in champions %}
+                            {% for champion in champions %}
                             <tr>
-                                <td>{{ key }}</td>
-                                <td>{{ item }}</td>
+                                <td>{{ champion.name }}</td>
+                                <td>{{ champion.class }}</td>
                             </tr>
                             {% endfor %}
                         </table>
