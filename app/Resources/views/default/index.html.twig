@@ -9,13 +9,17 @@
                     <div class="panel-heading">List of Champions</div>
                         <table class="table">
                             <tr>
+                                <th>Image</th>
                                 <th>Champion</th>
                                 <th>Class</th>
+                                <th>Description</th>
                             </tr>
                             {% for champion in champions %}
                             <tr>
+                                <td><img src="{{ champion.image }}"></td>
                                 <td>{{ champion.name }}</td>
                                 <td>{{ champion.class }}</td>
+                                <td>{{ champion.description }}</td>
                             </tr>
                             {% endfor %}
                         </table>

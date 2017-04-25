@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use \Symfony\Component\Security\Core\User\UserInterface;
@@ -88,6 +89,22 @@ class User implements UserInterface
      */
     private $passRecoverTimeStamp;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Alliance")
+     * @ORM\JoinColumn(name="alliance_id", referencedColumnName="id")
+     */
+    private $alliance;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $allianceRole;
+
+
+    public function __construct()
+    {
+        $this->alliance = new ArrayCollection();
+    }
 
     /**
      * @return string
@@ -287,6 +304,38 @@ class User implements UserInterface
     public function setPassRecoverTimeStamp($passRecoverTimeStamp)
     {
         $this->passRecoverTimeStamp = $passRecoverTimeStamp;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAlliance()
+    {
+        return $this->alliance;
+    }
+
+    /**
+     * @param mixed $alliance
+     */
+    public function setAlliance($alliance)
+    {
+        $this->alliance = $alliance;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAllianceRole()
+    {
+        return $this->allianceRole;
+    }
+
+    /**
+     * @param mixed $allianceRole
+     */
+    public function setAllianceRole($allianceRole)
+    {
+        $this->allianceRole = $allianceRole;
     }
 
 

@@ -52,7 +52,7 @@ class RegistrationController extends Controller
                 ->setTo($user->getEmail())
                 ->setBody('Here is a link <a href="http://'.$website.'/verify/'.$user->getId().'/'.$idHash->generateHash().'">Verify your email</a>', 'text/html');
             $this->get('mailer')->send($message);
-            $this->addFlash('success', 'You sucesfully registered!');
+            $this->addFlash('success', 'You successfully registered!');
 
             return $this->redirectToRoute('login');
         }

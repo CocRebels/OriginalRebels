@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <h1>{{ alliance.name }}</h1>
+                    <h3>Alliance description:</h3>
+                    <p>{{ alliance.description }}</p>
+                    <p>Alliance owner: {{ alliance.allianceOwner }}</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2>Alliance members {{ alliance.userNumber }}/30</h2>
+                <ul>
+                {% for member in allianceMembers %}
+                    <li>{{ member.username }}</li>
+                     {% endfor %}
+                    </ul>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

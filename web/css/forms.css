@@ -55,3 +55,9 @@ input::-webkit-input-placeholder {
     font-size: 11px;
     text-align: center;
 }
+.alliance-form{ margin-top:15px;}
+.alliance-form .textarea{ min-height:220px; resize:none;}
+.form-control{ box-shadow:none; border-color:#eee; height:49px;}
+.form-control:focus{ box-shadow:none; border-color:#00b09c;}
+.main-btn{ background:#00b09c; border-color:#00b09c; color:#fff;}
+.main-btn:hover{ background:#00a491;color:#fff;}

@@ -20,4 +20,13 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
             ->getQuery()
             ->getOneOrNullResult();
     }
+    public function findAllAllianceMembers($alliance)
+    {
+        return$this->createQueryBuilder('u')
+            ->select('u.username')
+            ->where('u.alliance = :alliance')
+            ->setParameter('alliance', $alliance)
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

@@ -8,6 +8,7 @@ namespace AppBundle\Command;
  * Time: 2:16 PM
  */
 
+use AppBundle\Entity\Champion;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -35,6 +36,12 @@ class ImportChampionsCommand extends ContainerAwareCommand
         foreach ($links as $link)
         {
             $championData = $this->getChampionData($link);
+//            if ($championData === null)
+//            {
+//                continue;
+//            }
+//            $this->saveChampionData($championData);
+            $output->writeln('Uploaded:'.$championData['name']);
         }
 
         // retrieve the argument value using getArgument()
@@ -77,15 +84,31 @@ class ImportChampionsCommand extends ContainerAwareCommand
     {
         $source = $this->getWebsiteSourceCode($link);
         $crawler = new Crawler($source, 'https');
-        $championData['name'] = $crawler->filter('table.infobox > tr > th')->eq(0)->text();
-        $championData['description'] = $crawler->filter('div.mw-content-ltr > p')->eq(1)->text();
-        $championData['class'] = $crawler->filter('table.infobox > tr > td > a')->eq(0)->text();
-        dump($championData);exit;
+        if ($crawler->filter('table.infobox')->count() === 0)
+        {
+            return $championData = null;
+        }
+        else {
+            $championData['name'] = $crawler->filter('table.infobox > tr > th')->eq(0)->text();
+            $championData['description'] = $crawler->filter('div.mw-content-ltr > p')->eq(1)->text();
+            $championData['class'] = $crawler->filter('table.infobox > tr > td > a')->eq(0)->text();
+            $championData['image'] = $crawler->filter('table.infobox.bordered > tbody > tr > td > center > div.tabberlive > div.tabbertab > p > a.image.image-thumbnail > img')->attr('src');
+            dump($championData['image']);
+            return $championData;
+        }
     }
 
     public function saveChampionData(array $championData)
     {
-
+        $em = $this->getContainer()->get('doctrine')
+            ->getManager();
+        $champion = new Champion();
+        $champion->setName($championData['name']);
+        $champion->setDescription($championData['description']);
+        $champion->setClass($championData['class']);
+        $champion->setImage($championData['image']);
+        $em->persist($champion);
+        $em->flush();
     }
 
 }

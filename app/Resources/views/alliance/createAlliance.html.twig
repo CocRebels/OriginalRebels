@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            {{ form_start(form, {'attr': {'class': 'alliance-form'}}) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_label(form.name) }}
+                        <div class="form-group">
+                        {{ form_widget(form.name, {'attr': {'placeholder': 'Choose your Alliance name...'}}) }}
+                        </div>
+                        {{ form_errors(form.name) }}
+                    </div>
+                    <div class="col-md-12">
+                        {{ form_label(form.description) }}
+                        <div class="form-group">
+                            {{ form_widget(form.description, {'attr': {'placeholder': 'Write your Alliance description...'}}) }}
+                        </div>
+                        {{ form_errors(form.description) }}
+                    </div>
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-success">Create alliance</button>
+                    </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
