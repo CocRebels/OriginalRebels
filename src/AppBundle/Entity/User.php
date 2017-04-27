@@ -100,12 +100,6 @@ class User implements UserInterface
      */
     private $allianceRole;
 
-
-    public function __construct()
-    {
-        $this->alliance = new ArrayCollection();
-    }
-
     /**
      * @return string
      */

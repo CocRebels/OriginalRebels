@@ -78,4 +78,16 @@ class AllianceController extends Controller
         );
 
     }
+
+    /**
+     * @Route("/inviteMember", name="memberInvitation")
+     */
+    public function inviteMemberAction()
+    {
+
+        return $this->render(
+          'alliance/allianceInviteNewMember.html.twig'
+        );
+
+    }
 }

@@ -1,0 +1,18 @@
+# Elsastica search
+fos_elastica:
+    clients:
+        default: { host: localhost, port: 9200 }
+    indexes:
+        app:
+            index_name: app_%kernel.environment%
+            types:
+                user:
+                    properties:
+                        username: ~
+                        email: ~
+                    persistence:
+                        driver: orm
+                        model: AppBundle\Entity\User
+                        provider: ~
+                        finder: ~
+                        listener: true

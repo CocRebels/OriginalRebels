@@ -31,11 +31,14 @@
         "twig/twig": "^1.0||^2.0",
         "symfony/finder": "^3.2",
         "symfony/dom-crawler": "^3.2",
-        "eightpoints/guzzle-bundle": "^5.3"
+        "eightpoints/guzzle-bundle": "^5.3",
+        "friendsofsymfony/elastica-bundle": "^4.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+        "symfony/phpunit-bridge": "^3.0",
+        "doctrine/doctrine-fixtures-bundle": "^2.3",
+        "nelmio/alice": "^2.3"
     },
     "scripts": {
         "symfony-scripts": [

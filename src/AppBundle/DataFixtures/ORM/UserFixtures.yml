@@ -1,0 +1,9 @@
+AppBundle\Entity\User:
+    user_{1..10}:
+        username: '<name()>'
+        date_created: '<dateTimeBetween("-200 days", "now")>'
+        status: 'Y'
+        password: '$2y$13$Cj4jDYsmyWuuuQFAEvzyte3/3BHOWs6TfOvCM7DukNZN0/PCZYhpO'
+        email: 'artur.litvinavicius<numberBetween(1, 200)>@gmail.com'
+        roles: ["ROLE_USER"]
+        country: 'AX'

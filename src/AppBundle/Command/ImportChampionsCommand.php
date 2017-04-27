@@ -36,11 +36,11 @@ class ImportChampionsCommand extends ContainerAwareCommand
         foreach ($links as $link)
         {
             $championData = $this->getChampionData($link);
-//            if ($championData === null)
-//            {
-//                continue;
-//            }
-//            $this->saveChampionData($championData);
+            if ($championData === null)
+            {
+                continue;
+            }
+            $this->saveChampionData($championData);
             $output->writeln('Uploaded:'.$championData['name']);
         }
 
@@ -92,8 +92,10 @@ class ImportChampionsCommand extends ContainerAwareCommand
             $championData['name'] = $crawler->filter('table.infobox > tr > th')->eq(0)->text();
             $championData['description'] = $crawler->filter('div.mw-content-ltr > p')->eq(1)->text();
             $championData['class'] = $crawler->filter('table.infobox > tr > td > a')->eq(0)->text();
-            $championData['image'] = $crawler->filter('table.infobox.bordered > tbody > tr > td > center > div.tabberlive > div.tabbertab > p > a.image.image-thumbnail > img')->attr('src');
-            dump($championData['image']);
+            $image = $crawler->filter('div.tabbertab > p > a.image.image-thumbnail > img')->each(function (Crawler $node, $i) {
+                return $node->attr('src');
+            });
+            $championData['image'] = $image[0];
             return $championData;
         }
     }

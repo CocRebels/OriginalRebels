@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -32,7 +33,8 @@ class DefaultController extends Controller
      */
     public function domAction()
     {
-        dump('testarea');
-        exit;
+        $finder = $this->get('fos_elastica.finder.app.user');
+        $results = $finder->find('');
+        return new JsonResponse($results);
     }
 }
