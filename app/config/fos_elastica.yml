@@ -4,7 +4,6 @@ fos_elastica:
         default: { host: localhost, port: 9200 }
     indexes:
         app:
-            index_name: app_%kernel.environment%
             types:
                 user:
                     properties:

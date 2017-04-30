@@ -34,7 +34,7 @@ class DefaultController extends Controller
     public function domAction()
     {
         $finder = $this->get('fos_elastica.finder.app.user');
-        $results = $finder->find('');
-        return new JsonResponse($results);
+        $results = $finder->find('Adah Reichel');
+        dump($results);exit;
     }
 }
