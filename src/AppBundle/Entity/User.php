@@ -34,11 +34,11 @@ class User implements UserInterface
      */
     private $status;
     /**
-     * @ORM\Column(type="string", length=25, unique=true)
+     * @ORM\Column(type="string", length=35, unique=true)
      * @Assert\NotBlank()
      * @Assert\Length(
      *      min="6",
-     *      max="25",
+     *      max="35",
      *      minMessage="Your Username must be at least {{ limit }} characters long",
      *      maxMessage="Your Username cannot be longer than {{ limit }} characters"
      * )
@@ -49,7 +49,7 @@ class User implements UserInterface
      * @Assert\Length(max=4096)
      * @Assert\Length(
      *      min="10",
-     *      max="50",
+     *      max="60",
      *      minMessage="Your Password must be at least {{ limit }} characters long",
      *      maxMessage="Your Password cannot be longer than {{ limit }} characters"
      * )

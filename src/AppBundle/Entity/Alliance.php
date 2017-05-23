@@ -53,15 +53,14 @@ class Alliance
     private $description;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $userNumber;
-
-    /**
      * @ORM\Column(type="string")
      */
     private $allianceOwner;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $allianceRules;
     /**
      * @return mixed
      */
@@ -97,22 +96,6 @@ class Alliance
     /**
      * @return mixed
      */
-    public function getUserNumber()
-    {
-        return $this->userNumber;
-    }
-
-    /**
-     * @param mixed $userNumber
-     */
-    public function setUserNumber($userNumber)
-    {
-        $this->userNumber = $userNumber;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getId()
     {
         return $this->id;
@@ -133,6 +116,23 @@ class Alliance
     {
         $this->allianceOwner = $allianceOwner;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAllianceRules()
+    {
+        return $this->allianceRules;
+    }
+
+    /**
+     * @param mixed $allianceRules
+     */
+    public function setAllianceRules($allianceRules)
+    {
+        $this->allianceRules = $allianceRules;
+    }
+
 
 
 

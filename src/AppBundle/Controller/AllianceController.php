@@ -10,16 +10,24 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Alliance;
-use AppBundle\Form\AllianceCreate;
+use AppBundle\Entity\User;
 use AppBundle\Form\AllianceCreateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class AllianceController extends Controller
 {
     /**
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @Route("/create_alliance", name="alliance_creation")
      */
     public function createAllianceAction(Request $request)
@@ -32,15 +40,14 @@ class AllianceController extends Controller
         if ($form->isSubmitted() && $form->isValid())
         {
             $user = $this->getUser();
-            $alliance->setUserNumber(1);
-            $alliance->setAllianceOwner($user->getUsername());
+            $alliance->setAllianceOwner($user->getId());
             $user->setAllianceRole('ROLE_OWNER');
             $user->setAlliance($alliance);
             $em = $this->getDoctrine()->getManager();
             $em->persist($alliance);
             $em->persist($user);
             $em->flush();
-            $this->addFlash('succes', 'Alliance successfully created');
+            $this->addFlash('success', 'Alliance successfully created');
 
             return $this->redirectToRoute('homepage');
         }
@@ -82,12 +89,42 @@ class AllianceController extends Controller
     /**
      * @Route("/inviteMember", name="memberInvitation")
      */
-    public function inviteMemberAction()
+    public function inviteMemberAction(Request $request)
     {
+        $decoded = '';
+        $data = array();
+        $form = $this->createFormBuilder($data)
+            ->add('username', TextType::class)
+            ->getForm();
 
+        $form->handleRequest($request);
+        $data = $form->getData();
+        if (!empty($data))
+        {
+            $encoders = array( new XmlEncoder(), new JsonEncoder());
+            $normalizers = array( new ObjectNormalizer());
+            $serializer = new Serializer($normalizers, $encoders);
+            $finder = $this->get('fos_elastica.finder.app.user');
+            $results = $finder->find($data['username']);
+            $jsonResult = $serializer->serialize($results, 'json');
+            $decoded = json_decode($jsonResult);
+        }
         return $this->render(
-          'alliance/allianceInviteNewMember.html.twig'
+          'alliance/allianceInviteNewMember.html.twig', array(
+              'form' => $form->createView(),
+              'data' => $data,
+              'json' => $decoded,
+            )
         );
+
+    }
+
+    /**
+     * @Route("/inviteMember/send/{email}", name="sendInvitation")
+     * @param $email
+     */
+    public function allianceInvitationAction($email)
+    {
 
     }
 }

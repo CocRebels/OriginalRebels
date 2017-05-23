@@ -327,6 +327,9 @@ class UserType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => User::class,
             'validation_groups' => ['Default', 'Registration'],
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            'csrf_token_id' => 'task_item',
         ));
     }
 }

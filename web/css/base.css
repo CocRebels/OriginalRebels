@@ -4,3 +4,16 @@ body, html{
     background-color: #bfd3d3;
     font-family: 'Oxygen', sans-serif;
 }
+.invite-button {
+    margin: 0 auto;
+}
+.div-elements-center{
+    text-align: center;
+}
+.content-margin {
+    margin-left:10%;
+    margin-right: 10%;
+}
+.h-main {
+    text-align: center;
+}

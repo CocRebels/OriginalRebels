@@ -1,5 +1,48 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>This is member invitation area</h1>
+    <div class="container">
+    <h1 class="h-main">Invite members to your alliance so that you can achieve greatness!</h1>
+        <div class="col-lg-12">
+        {{ form_start(form) }}
+        <div class="form-inline">
+            <div class="cols-sm-10">
+                <div class="input-inline">
+                <div class="input-group col-md-8">
+                    <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
+                    {{ form_widget(form.username, {'attr': {'placeholder': 'Choose your Username..'}}) }}
+                </div>
+                    <button  type="submit" class="btn btn-primary btn-md">Search</button>
+            </div>
+            {{ form_errors(form.username) }}
+        </div>
+        {{ form_rest(form) }}
+        {{ form_start(form) }}
+        </div>
+            <div class="col-lg-12">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Id</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in json %}
+                    <tr>
+                        <td>{{ data.username }}</td>
+                        <td>{{ data.email }}</td>
+                        <td>{{ data.id }}</td>
+                        <td><button class="btn btn-primary">Invite to alliance</button></td>
+                    </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if data is empty %}
+                    <h2>No users found!</h2>
+                {% endif %}
+            </div>
+    </div><!-- /.col-lg-6 -->
 {% endblock %}

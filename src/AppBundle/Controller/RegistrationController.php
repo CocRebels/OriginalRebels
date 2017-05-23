@@ -40,7 +40,6 @@ class RegistrationController extends Controller
             $user->setRoles(['ROLE_USER_NOT_VERIFIED']);
             $user->setStatus('N');
             $user->setDateCreated(new \DateTime());
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
