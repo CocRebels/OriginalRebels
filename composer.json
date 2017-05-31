@@ -32,7 +32,8 @@
         "symfony/finder": "^3.2",
         "symfony/dom-crawler": "^3.2",
         "eightpoints/guzzle-bundle": "^5.3",
-        "friendsofsymfony/elastica-bundle": "^4.0"
+        "friendsofsymfony/elastica-bundle": "^4.0",
+        "symfony/event-dispatcher": "v3.2.9"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

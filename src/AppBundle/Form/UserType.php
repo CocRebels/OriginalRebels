@@ -22,6 +22,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class UserType extends AbstractType
 {
+
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -320,6 +322,7 @@ class UserType extends AbstractType
                     "Zimbabwe" => "ZW",
                 )
             ));
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

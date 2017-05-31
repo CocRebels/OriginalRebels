@@ -2,6 +2,34 @@
 
 {% block body %}
 
-    <h1>Works</h1>
+    <h2>User edit form</h2>
 
+    <div class="container">
+        <div class="row">
+            {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form_label(form.username) }}
+                        <div class="form-group">
+                        {{ form_widget(form.username, {'attr': {'placeholder' : 'Your username', 'value' : username  }}) }}
+                        </div>
+                        {{ form_errors(form.username) }}
+                    </div>
+                </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_label(form.country) }}
+                    <div class="form-group">
+                        {{ form_widget(form.country) }}
+                    </div>
+                    {{ form_errors(form.country) }}
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-success" >Edit data</button>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}

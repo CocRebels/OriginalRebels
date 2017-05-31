@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\CountriesData;
 use AppBundle\Form\EditUsernameType;
+use AppBundle\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -46,12 +47,27 @@ class UserController extends Controller
     public function editUserAction(Request $request)
     {
         $user = $this->getUser();
-        $usernameForm = $this->createForm(EditUsernameType::class);
-        $usernameForm->handleRequest($request);
+        $form = $this->createForm(UserType::class);
+        $form->handleRequest($request);
+        $form->remove('plainPassword');
+        $form->remove('email');
+        if ($form->isSubmitted() && $form->isValid() )
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            $this->addFlash('success', 'You successfully changed your data!');
+        }
+
 
 
         return $this->render(
-            'user/editUser.html.twig'
+            'user/editUser.html.twig',
+            array(
+                'form' => $form->createView(),
+                'username' => $user->getUsername(),
+                'country' => $user->getCountry()
+                )
         );
     }
 }
