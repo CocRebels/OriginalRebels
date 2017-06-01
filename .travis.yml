@@ -7,6 +7,3 @@ php:
 
 services:
   - mysql
-
-script:
-- vendor/bin/phpcs -p --standard=PSR2 --extensions=php ./srcue
