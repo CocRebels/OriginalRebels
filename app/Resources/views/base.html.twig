@@ -49,6 +49,13 @@
             </div>
         </div>
         </nav>
+        <div class="container">
+        {% for message in app.session.flashBag.get('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        </div>
     {% else %}
         <nav class="navbar navbar-default navbar-static-top navbar-inverse" role="navigation">
             <div class="container-fluid">
@@ -68,11 +75,13 @@
                 </div>
             </div>
         </nav>
+        <div class="container">
         {% for message in app.session.flashBag.get('success') %}
             <div class="alert alert-success">
                 {{ message }}
             </div>
         {% endfor %}
+        </div>
     {% endif %}
         {% block body %}
 

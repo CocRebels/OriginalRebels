@@ -57,7 +57,6 @@ class UserController extends Controller
             $em->persist($user);
             $em->flush();
             $this->addFlash('success', 'You successfully changed your data!');
-
             return $this->redirectToRoute('user_main_area');
         }
 
@@ -68,6 +67,18 @@ class UserController extends Controller
                 'username' => $user->getUsername(),
                 'country' => $user->getCountry()
                 )
+        );
+    }
+
+    /**
+     * @Route("/user_notifications", name="user_notification_log")
+     */
+    public function userNotifications(Request $request)
+    {
+
+
+        return $this->render(
+            'user/userNotifications.html.twig'
         );
     }
 }
