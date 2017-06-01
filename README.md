@@ -1,4 +1,3 @@
 ChampionsRebels
 ===============
-
-A Symfony project created on February 22, 2017, 3:22 pm.
+[![Build Status](https://travis-ci.org/nfqakademija/Fuksai.svg?branch=master)](https://travis-ci.org/nfqakademija/Fuksai)
