@@ -1,31 +1,27 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-        <!-- Latest compiled and minified CSS -->
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="{{ asset('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css') }}" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <!-- Latest compiled and minified CSS -->
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap-theme.css') }}" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <link href="{{ asset('css/menu.css') }}" rel="stylesheet" type="text/css" >
+        <link href="{{ asset('css/base.css') }}" rel="stylesheet" type="text/css" >
+        <link rel="stylesheet" href="{{ asset('css/bootstrap/bootstrap.min.css') }}" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link href="{{ asset('css/forms.css') }}" rel="stylesheet" type="text/css">
+        <!-- Google fonts -->
         <link href='{{ asset('https://fonts.googleapis.com/css?family=Passion+One') }}' rel='stylesheet' type='text/css'>
         <link href='{{ asset('https://fonts.googleapis.com/css?family=Oxygen') }}' rel='stylesheet' type='text/css'>
-        <link href="{{ asset('css/menu.css') }}" rel="stylesheet" type="text/css" >
-        <link href="{{ asset('css/forms.css') }}" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="{{ asset('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css') }}" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <link href="{{ asset('css/base.css') }}" rel="stylesheet" type="text/css" >
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="{{ asset('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js') }}" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-        <script src="{{ asset('https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css') }}"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+    {% endblock %}
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="{{ asset('js/bootstrap.js') }}" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/jquery-3.2.1.js') }}"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 
-        <!-- Google Fonts -->
-        <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
-        <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
-
-
-    </head>
-    <body>
+</head>
+<body>
 
     {% if is_granted('ROLE_USER') %}
     <nav class="navbar navbar-default navbar-static-top navbar-inverse" role="navigation">
@@ -44,7 +40,8 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="{{ path('user_main_area') }}">User</a></li>
-                    <li><a href="{{ path('logout') }}" id="signout"><span class="glyphicon glyphicon-lock"></span> Sign Out</a></li>
+                    <li><a href="{{ path('logout') }}" id="signout"><i class="fa fa-lock" aria-hidden="true"></i>
+                            Sign Out</a></li>
                 </ul>
             </div>
         </div>
@@ -76,11 +73,16 @@
             </div>
         </nav>
         <div class="container">
-        {% for message in app.session.flashBag.get('success') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
+            {% for message in app.session.flashBag.get('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.session.flashBag.get('notice') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
         </div>
     {% endif %}
         {% block body %}

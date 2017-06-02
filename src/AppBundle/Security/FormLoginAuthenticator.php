@@ -86,7 +86,8 @@ class FormLoginAuthenticator extends AbstractFormLoginAuthenticator
         if ($userRole == 'ROLE_USER_NOT_VERIFIED') {
             $this->token->setToken(null);
             $this->session->invalidate();
-
+            $this->session->getFlashBag()
+                ->add('notice', 'You need to verify your email in order to log in!');
             return  new RedirectResponse($this->router->generate('login'));
         }
 

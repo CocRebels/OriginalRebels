@@ -14,6 +14,7 @@ use AppBundle\Form\ChangePasswordType;
 use AppBundle\Form\SendPasswordChangeType;
 use AppBundle\Security\Hashing;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -62,6 +63,9 @@ class SecurityController extends Controller
      */
     public function forgotPasswordAction(Request $request)
     {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('homepage');
+        }
         $website = $this->getParameter('website');
         $form = $this->createForm(SendPasswordChangeType::class);
         $form->handleRequest($request);
@@ -98,6 +102,9 @@ class SecurityController extends Controller
      */
     public function passwordRecoveryAction($email, $key, Request $request)
     {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('homepage');
+        }
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')
             ->loadUserByUsername($email);
@@ -127,12 +134,15 @@ class SecurityController extends Controller
     /**
      * @param $key
      * @param $hash
+     * @Method("POST")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("verify/{key}/{hash}", name="verifyEmail")
      */
     public function verifyAction($key, $hash)
     {
-
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('homepage');
+        }
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->findOneBy(['id'=>$key]);
         if ($user == null ){
