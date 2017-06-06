@@ -292,7 +292,7 @@ class EditUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'validation_groups' => ['Default', 'Registration'],
+            'validation_groups' => ['Default'],
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
             'csrf_token_id' => 'task_item',

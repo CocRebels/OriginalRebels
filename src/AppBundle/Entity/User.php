@@ -35,7 +35,7 @@ class User implements UserInterface
     private $status;
     /**
      * @ORM\Column(type="string", length=35, unique=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"Registration"})
      * @Assert\Length(
      *      min="6",
      *      max="35",
@@ -63,7 +63,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=64, unique=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"Registration"})
      * @Assert\Email()
      */
     private $email;
@@ -85,7 +85,7 @@ class User implements UserInterface
     private $passRecoverHash;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $passRecoverTimeStamp;
 

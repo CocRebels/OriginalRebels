@@ -10,6 +10,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Alliance;
+use AppBundle\Entity\AllianceInvitation;
 use AppBundle\Entity\User;
 use AppBundle\Form\AllianceCreateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -41,6 +42,7 @@ class AllianceController extends Controller
         {
             $user = $this->getUser();
             $alliance->setAllianceOwner($user->getId());
+            $alliance->setAllianceRules('');
             $user->setAllianceRole('ROLE_OWNER');
             $user->setAlliance($alliance);
             $em = $this->getDoctrine()->getManager();
@@ -125,6 +127,15 @@ class AllianceController extends Controller
      */
     public function allianceInvitationAction($email)
     {
-
+        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $invitation = new AllianceInvitation();
+        $invitation->setGetter($email);
+        $invitation->setSource($user->getEmail());
+        $invitation->setMessage('Alliance invitation');
+        $invitation->setType('invite');
+        $invitation->setSendDate((new \DateTime())->getTimestamp());
+        $em->persist($invitation);
+        $em->flush();
     }
 }

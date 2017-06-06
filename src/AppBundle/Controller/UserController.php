@@ -46,15 +46,15 @@ class UserController extends Controller
     public function editUserAction(Request $request)
     {
         $user = $this->getUser();
-        $form = $this->createForm(EditUserType::class);
+        $form = $this->createForm(EditUserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid() )
         {
             $data = $form->getData();
-            $user->setUsername($data['username']);
-            $user->setCountry($data['country']);
+            $user->setUsername($data->getUsername());
+            $user->setCountry($data->getCountry());
             $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
+            $em->merge($user);
             $em->flush();
             $this->addFlash('success', 'You successfully changed your data!');
             return $this->redirectToRoute('user_main_area');
@@ -75,7 +75,6 @@ class UserController extends Controller
      */
     public function userNotifications(Request $request)
     {
-
 
         return $this->render(
             'user/userNotifications.html.twig'
